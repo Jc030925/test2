@@ -3,7 +3,7 @@ let petalsInterval;
 let lockTimerInterval;
 let hideTimeout;
 
-// I-set ang Target Unlock Date: March 9, 2026, 12:00 AM (00:00:00)
+// I-set ang Target Unlock Date: March 9, 2026, 12:00 AM
 const UNLOCK_DATE = new Date("March 9, 2026 00:00:00").getTime();
 
 window.openEnvelope = function() {
@@ -38,15 +38,12 @@ window.checkDateUnlock = function() {
     if (now >= UNLOCK_DATE) {
         goToThirdPage();
     } else {
-        // Ipakita ang countdown
         lockDisplay.style.display = 'block';
         updateLockCountdown(); 
         
-        // Simulan ang countdown para sa lock
         if (lockTimerInterval) clearInterval(lockTimerInterval);
         lockTimerInterval = setInterval(updateLockCountdown, 1000);
 
-        // I-reset ang timeout para laging fresh na 10 seconds bawat click
         if (hideTimeout) clearTimeout(hideTimeout);
         hideTimeout = setTimeout(() => {
             lockDisplay.style.display = 'none';
