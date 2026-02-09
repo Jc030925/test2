@@ -33,7 +33,9 @@ body.night-mode { background: transparent !important; }
     border-radius: 50px; font-size: 1.3rem; cursor: pointer;
     font-family: 'Great Vibes', cursive; margin-top: 15px;
     box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+    transition: all 0.3s;
 }
+.heart-btn.locked { background: #555; cursor: not-allowed; opacity: 0.7; }
 
 #big-timer-container {
   z-index: 1001; position: relative; color: white;
@@ -50,7 +52,6 @@ body.night-mode { background: transparent !important; }
 
 .instruction-text { color: #880e4f; font-weight: bold; margin-top: 20px; text-align: center; font-size: 1.2rem; }
 
-/* Pounding effect */
 @keyframes pounding {
   0% { transform: scale(1); }
   15% { transform: scale(1.15); }
