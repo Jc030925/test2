@@ -1,5 +1,6 @@
 let heartRain;
 let petalsInterval;
+const TARGET_DATE = new Date("March 21, 2026 17:00:00").getTime();
 
 // PAGE 1 TO PAGE 2
 window.openEnvelope = function() {
@@ -29,7 +30,12 @@ window.confirmDate = function() {
 };
 
 window.checkDateUnlock = function() {
-    goToThirdPage();
+    const now = new Date().getTime();
+    if (now >= TARGET_DATE) {
+        goToThirdPage();
+    } else {
+        alert("Wait luv! Our anniversary hasn't started yet. ❤");
+    }
 };
 
 function goToThirdPage() {
@@ -111,11 +117,20 @@ function launchTripleFireworks() {
 }
 
 function startCountdown() {
-    const target = new Date("March 21, 2026 17:00:00").getTime();
     const display = document.getElementById("timer-display");
+    const btn = document.getElementById("secret-heart-btn");
+    
     setInterval(() => {
-        const dist = target - new Date().getTime();
-        if (dist < 0) { display.innerHTML = "HAPPY ANNIVERSARY!"; return; }
+        const now = new Date().getTime();
+        const dist = TARGET_DATE - now;
+        
+        if (dist < 0) {
+            display.innerHTML = "HAPPY ANNIVERSARY!";
+            btn.classList.remove('locked');
+            btn.innerHTML = "Open Message ❤";
+            return;
+        }
+        
         const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000), m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
         display.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
     }, 1000);
