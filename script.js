@@ -63,7 +63,7 @@ function updateLockCountdown() {
     }
 
     const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000), m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
-    lockDisplay.innerHTML = `Wait luv! Mar 9 @ 12am: <br>${d}d : ${h}h : ${m}m : ${s}s`;
+    lockDisplay.innerHTML = `Patience, luv! Our special day is coming: <br>${d}d : ${h}h : ${m}m : ${s}s`;
 }
 
 function goToThirdPage() {
@@ -154,3 +154,4 @@ function startCountdown() {
         display.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
     }, 1000);
 }
+
