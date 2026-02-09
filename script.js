@@ -1,47 +1,43 @@
 let heartRain;
 let petalsInterval;
 
-// Buksan ang sobre
+// PAGE 1 TO PAGE 2
 window.openEnvelope = function() {
     const music = document.getElementById("bgMusic");
-    music.play().catch(e => console.log("Music blocked by browser"));
-    
+    music.play().catch(e => console.log("Music play blocked"));
     document.getElementById('envelope-wrapper').style.display = 'none';
     document.getElementById('invitation-letter').style.display = 'block';
-    
     heartRain = setInterval(createFallingHeart, 400);
 };
 
-// I-confirm ang date
+// PAGE 2 TO TIMER STAGE
 window.confirmDate = function() {
     clearInterval(heartRain);
     document.getElementById('heart-container').innerHTML = '';
     document.getElementById('invitation-letter').style.display = 'none';
-    
     const finalStage = document.getElementById('final-stage');
     finalStage.style.display = 'block';
-    
     const bgVideo = document.getElementById('bg-video-final');
     bgVideo.style.display = 'block';
-    
     setTimeout(() => {
         bgVideo.style.opacity = "1";
-        finalStage.style.opacity = "1";
+        finalStage.classList.add('show');
     }, 50);
-    
     document.body.classList.add('night-mode');
     setInterval(launchTripleFireworks, 800);
     startCountdown();
 };
 
-// Pumunta sa huling mensahe
 window.checkDateUnlock = function() {
+    goToThirdPage();
+};
+
+function goToThirdPage() {
     const finalStage = document.getElementById('final-stage');
     const thirdStage = document.getElementById('third-stage');
     const bgMusic = document.getElementById('bgMusic');
     const finalMusic = document.getElementById('finalMusic');
 
-    // Fade out old music, fade in new music
     let fadeOut = setInterval(() => {
         if (bgMusic.volume > 0.1) {
             bgMusic.volume -= 0.1;
@@ -49,7 +45,7 @@ window.checkDateUnlock = function() {
             bgMusic.pause();
             clearInterval(fadeOut);
             finalMusic.volume = 0;
-            finalMusic.play();
+            finalMusic.play().catch(e => console.log("Final music blocked"));
             let fadeIn = setInterval(() => {
                 if (finalMusic.volume < 0.9) finalMusic.volume += 0.1;
                 else clearInterval(fadeIn);
@@ -57,21 +53,14 @@ window.checkDateUnlock = function() {
         }
     }, 200);
 
-    finalStage.style.display = 'none';
-    thirdStage.style.display = 'block';
-    thirdStage.scrollTop = 0;
-    petalsInterval = setInterval(createRosePetal, 300);
-};
-
-// Animations
-function createFallingHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'falling-heart';
-    heart.innerHTML = '❤';
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-    document.getElementById('heart-container').appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
+    finalStage.style.opacity = '0';
+    setTimeout(() => {
+        finalStage.style.display = 'none';
+        thirdStage.style.display = 'block';
+        thirdStage.scrollTop = 0;
+        petalsInterval = setInterval(createRosePetal, 300);
+        setTimeout(() => { thirdStage.classList.add('show'); }, 50);
+    }, 2000);
 }
 
 function createRosePetal() {
@@ -89,6 +78,16 @@ function createRosePetal() {
     ], { duration: duration * 1000, easing: 'linear' });
     document.body.appendChild(petal);
     setTimeout(() => petal.remove(), duration * 1000);
+}
+
+function createFallingHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'falling-heart';
+    heart.innerHTML = '❤';
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+    document.getElementById('heart-container').appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
 }
 
 function launchTripleFireworks() {
