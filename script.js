@@ -1,7 +1,6 @@
 let heartRain;
 let petalsInterval;
 
-// PAGE 1 TO PAGE 2
 window.openEnvelope = function() {
     const music = document.getElementById("bgMusic");
     music.play().catch(e => console.log("Music play blocked"));
@@ -10,7 +9,6 @@ window.openEnvelope = function() {
     heartRain = setInterval(createFallingHeart, 400);
 };
 
-// PAGE 2 TO TIMER STAGE
 window.confirmDate = function() {
     clearInterval(heartRain);
     document.getElementById('heart-container').innerHTML = '';
@@ -28,7 +26,6 @@ window.confirmDate = function() {
     startCountdown();
 };
 
-// TIMER TO PAGE 3 (MODIFIED TO BE CLICKABLE NOW)
 window.checkDateUnlock = function() {
     goToThirdPage();
 };
@@ -39,7 +36,6 @@ function goToThirdPage() {
     const bgMusic = document.getElementById('bgMusic');
     const finalMusic = document.getElementById('finalMusic');
 
-    // Music Transition
     let fadeOut = setInterval(() => {
         if (bgMusic.volume > 0.1) {
             bgMusic.volume -= 0.1;
@@ -55,7 +51,6 @@ function goToThirdPage() {
         }
     }, 200);
 
-    // Page Transition
     finalStage.style.opacity = '0';
     setTimeout(() => {
         finalStage.style.display = 'none';
