@@ -1,8 +1,11 @@
 let heartRain;
 let petalsInterval;
-const TARGET_DATE = new Date("March 21, 2026 17:00:00").getTime();
+let lockTimerInterval;
+let hideTimeout;
 
-// PAGE 1 TO PAGE 2
+// I-set ang Target Unlock Date: March 9, 2026, 12:00 AM (00:00:00)
+const UNLOCK_DATE = new Date("March 9, 2026 00:00:00").getTime();
+
 window.openEnvelope = function() {
     const music = document.getElementById("bgMusic");
     music.play().catch(e => console.log("Music play blocked"));
@@ -11,7 +14,6 @@ window.openEnvelope = function() {
     heartRain = setInterval(createFallingHeart, 400);
 };
 
-// PAGE 2 TO TIMER STAGE
 window.confirmDate = function() {
     clearInterval(heartRain);
     document.getElementById('heart-container').innerHTML = '';
@@ -31,12 +33,41 @@ window.confirmDate = function() {
 
 window.checkDateUnlock = function() {
     const now = new Date().getTime();
-    if (now >= TARGET_DATE) {
+    const lockDisplay = document.getElementById('lock-timer');
+
+    if (now >= UNLOCK_DATE) {
         goToThirdPage();
     } else {
-        alert("Wait luv! Our anniversary hasn't started yet. ❤");
+        // Ipakita ang countdown
+        lockDisplay.style.display = 'block';
+        updateLockCountdown(); 
+        
+        // Simulan ang countdown para sa lock
+        if (lockTimerInterval) clearInterval(lockTimerInterval);
+        lockTimerInterval = setInterval(updateLockCountdown, 1000);
+
+        // I-reset ang timeout para laging fresh na 10 seconds bawat click
+        if (hideTimeout) clearTimeout(hideTimeout);
+        hideTimeout = setTimeout(() => {
+            lockDisplay.style.display = 'none';
+            clearInterval(lockTimerInterval);
+        }, 10000);
     }
 };
+
+function updateLockCountdown() {
+    const now = new Date().getTime();
+    const dist = UNLOCK_DATE - now;
+    const lockDisplay = document.getElementById('lock-timer');
+
+    if (dist <= 0) {
+        lockDisplay.innerHTML = "Unlock now! ❤";
+        return;
+    }
+
+    const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000), m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
+    lockDisplay.innerHTML = `Wait luv! Mar 9 @ 12am: <br>${d}d : ${h}h : ${m}m : ${s}s`;
+}
 
 function goToThirdPage() {
     const finalStage = document.getElementById('final-stage');
@@ -117,20 +148,11 @@ function launchTripleFireworks() {
 }
 
 function startCountdown() {
+    const target = new Date("March 21, 2026 17:00:00").getTime();
     const display = document.getElementById("timer-display");
-    const btn = document.getElementById("secret-heart-btn");
-    
     setInterval(() => {
-        const now = new Date().getTime();
-        const dist = TARGET_DATE - now;
-        
-        if (dist < 0) {
-            display.innerHTML = "HAPPY ANNIVERSARY!";
-            btn.classList.remove('locked');
-            btn.innerHTML = "Open Message ❤";
-            return;
-        }
-        
+        const dist = target - new Date().getTime();
+        if (dist < 0) { display.innerHTML = "HAPPY ANNIVERSARY!"; return; }
         const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000), m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
         display.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
     }, 1000);
