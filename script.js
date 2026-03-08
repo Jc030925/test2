@@ -63,7 +63,7 @@ function updateLockCountdown() {
     }
 
     const d = Math.floor(dist / 86400000), h = Math.floor((dist % 86400000) / 3600000), m = Math.floor((dist % 3600000) / 60000), s = Math.floor((dist % 60000) / 1000);
-    lockDisplay.innerHTML = `Patience, luv! Our special day is coming: <br>${d}d : ${h}h : ${m}m : ${s}s`;
+    lockDisplay.innerHTML = `It's not our anniversary yet: <br>${d}d : ${h}h : ${m}m : ${s}s`;
 }
 
 function goToThirdPage() {
@@ -96,6 +96,36 @@ function goToThirdPage() {
         setTimeout(() => { thirdStage.classList.add('show'); }, 50);
     }, 2000);
 }
+
+window.toggleVoice = function() {
+    const finalMusic = document.getElementById('finalMusic');
+    const voiceAudio = document.getElementById('voiceAudio');
+    const btn = document.querySelector('.voice-btn');
+
+    if (voiceAudio.paused) {
+        // 1. Gawing sobrang hina ng background music (0.1 na lang)
+        finalMusic.volume = 0.05; 
+        
+        // 2. Siguraduhin na ang voice recording ay naka-todo (1.0)
+        voiceAudio.volume = 1.0; 
+        
+        voiceAudio.play();
+        btn.innerHTML = "Listening... 🎤";
+        btn.classList.add('playing');
+
+        voiceAudio.onended = function() {
+            finalMusic.volume = 0.9; // Babalik ang lakas ng music pag tapos na
+            btn.innerHTML = "Listen again? 🎤";
+            btn.classList.remove('playing');
+        };
+    } else {
+        voiceAudio.pause();
+        voiceAudio.currentTime = 0;
+        finalMusic.volume = 0.9;
+        btn.innerHTML = "Listen to my voice? 🎤";
+        btn.classList.remove('playing');
+    }
+};
 
 function createRosePetal() {
     const petal = document.createElement('div');
@@ -154,4 +184,6 @@ function startCountdown() {
         display.innerHTML = `${d}d : ${h}h : ${m}m : ${s}s`;
     }, 1000);
 }
+
+
 
